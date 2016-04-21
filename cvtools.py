@@ -3,6 +3,13 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
+def ipynb_show_cv2_image(image_bgr, title=''):
+  image_rgb = image_bgr.copy()
+  image_rgb[:, :, 0] = image_bgr[:, :, 2]
+  image_rgb[:, :, 2] = image_bgr[:, :, 0]
+  ipynb_show_image(image_rgb, title)
+
+
 def ipynb_show_image(image, title=''):
   fig, ax = plt.subplots(figsize=(7, 7))
   ax.set_title(title)
