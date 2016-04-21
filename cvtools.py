@@ -9,7 +9,7 @@ def ipynb_show_cv2_image(image_bgr, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   image_rgb = image_bgr.copy()
   image_rgb[:, :, 0] = image_bgr[:, :, 2]
   image_rgb[:, :, 2] = image_bgr[:, :, 0]
-  ipynb_show_image(image_rgb, title)
+  ipynb_show_image(image_rgb, title, figsize)
 
 
 def ipynb_show_image(image, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
