@@ -6,7 +6,7 @@ def ipynb_show_image(image):
   plt.axis('off')
 
 
-def show_color_histogram(histogram, plot_title):
+def ipynb_show_color_histogram(histogram, plot_title):
   fig, ax = plt.subplots(figsize=(12, 1.5))
   ax.set_title(plot_title)
   ax.bar(range(len(histogram)), histogram, color='r', width=1)
