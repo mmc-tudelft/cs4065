@@ -3,15 +3,17 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-def ipynb_show_cv2_image(image_bgr, title=''):
+_DEFAULT_IMAGE_FIGSIZE = (7, 7)
+
+def ipynb_show_cv2_image(image_bgr, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   image_rgb = image_bgr.copy()
   image_rgb[:, :, 0] = image_bgr[:, :, 2]
   image_rgb[:, :, 2] = image_bgr[:, :, 0]
   ipynb_show_image(image_rgb, title)
 
 
-def ipynb_show_image(image, title=''):
-  fig, ax = plt.subplots(figsize=(7, 7))
+def ipynb_show_image(image, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
+  fig, ax = plt.subplots(figsize=figsize)
   ax.set_title(title)
   plt.imshow(image)
   plt.axis('off')
