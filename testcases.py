@@ -60,10 +60,22 @@ class TestLibrary(unittest.TestCase):
 
   def test_load_audio(self):
     try:
+      import numpy as np
+      import librosa
       from datasets import CS4065_Dataset
+
       audio_file_path = CS4065_Dataset.get_testcases_data()['audio']
-      # TODO(alessio): check properties (e.g., stream length).
-      raise NotImplementedError()
+      y, sample_rate = librosa.core.load(audio_file_path)
+
+      self.assertEqual(sample_rate, 22050)
+
+      # Mono signal expected.
+      y_shape = np.shape(y)
+      self.assertEqual(len(y_shape), 1)
+
+      # No bit exactness, allow 1/5 second of lenght difference.
+      length_tolerance = int(np.round(sample_rate / 5))
+      self.assertLessEqual(np.abs(y_shape[0] - 37309), length_tolerance)
     except ImportError as e:
       self.fail(e)
 
