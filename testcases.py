@@ -34,9 +34,10 @@ class TestLibrary(unittest.TestCase):
       video_reader = VideoReader()
       video_reader.open(video_file_path)
 
-      number_of_frames = video_reader.get_number_of_frames()
       video_width = video_reader.get_width()
       video_height = video_reader.get_height()
+      number_of_frames = video_reader.get_number_of_frames()
+      frame_rate = video_reader.get_frame_rate()
 
       self.assertTrue(video_reader.is_opened())
       self.assertTrue(video_width > 0)
@@ -52,7 +53,10 @@ class TestLibrary(unittest.TestCase):
         self.assertEqual(frame_shape[0], video_height)
         self.assertEqual(frame_shape[1], video_width)
         read_frames += 1
-      self.assertEqual(read_frames, number_of_frames)
+
+      # No bit exactness, allow 1/5 second of lenght difference.
+      length_tolerance = int(np.round(frame_rate / 5.0))
+      self.assertLessEqual(np.abs(read_frames - number_of_frames), length_tolerance)
     except ImportError as e:
       self.fail(e)
     except IOError as e:
@@ -74,7 +78,7 @@ class TestLibrary(unittest.TestCase):
       self.assertEqual(len(y_shape), 1)
 
       # No bit exactness, allow 1/5 second of lenght difference.
-      length_tolerance = int(np.round(sample_rate / 5))
+      length_tolerance = int(np.round(float(sample_rate) / 5.0))
       self.assertLessEqual(np.abs(y_shape[0] - 37309), length_tolerance)
     except ImportError as e:
       self.fail(e)
