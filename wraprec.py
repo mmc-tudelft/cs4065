@@ -16,11 +16,11 @@ class PyWrapRec(object):
 
   @classmethod
   def run(cls, config_file_path):
-    cls._check_dependencies()
+    cls.check_dependencies()
     # TODO(alessio): call BIN_WRAPREC
 
   @classmethod
-  def _check_dependencies(cls):
+  def check_dependencies(cls):
     if not cls._is_wraprec_deployed():
       cls._deploy_wraprec()
 
