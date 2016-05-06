@@ -12,7 +12,7 @@ eval "$SUDO apt-get -qq -y install mono-complete &> /dev/null"
 cd $base_path
 mkdir wraprec &> /dev/null
 cd wraprec
-wget -O wraprec.tar.gz https://github.com/babakx/WrapRec/releases/download/2.0.2/wraprec.2.0.2.tar.gz &> /dev/null
+wget -O wraprec.tar.gz https://github.com/babakx/WrapRec/releases/download/2.0.3/wraprec.2.0.3.tar.gz &> /dev/null
 [ -f wraprec.tar.gz ] &> /dev/null || exit 1
 tar xzf wraprec.tar.gz &> /dev/null || exit 2
 rm wraprec.tar.gz &> /dev/null
