@@ -1,2 +1,3 @@
 # Path to the datasets.
-PATH_DATA = '/home/student/data/cs4065'
+BASE_PATH = '/home/student'
+PATH_DATA = '%s/data/cs4065' % (BASE_PATH)
