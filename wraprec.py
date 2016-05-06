@@ -11,11 +11,12 @@ BIN_WRAPREC = os.path.join(BASE_PATH, 'wraprec', 'WrapRec.exe')
 class PyWrapRec(object):
 
   def __init__(self):
-    pass
+    raise Exception('Cannot instantiate. Call PyWrapRec.run(config_file_path) '
+                    'as static method.')
 
   @classmethod
   def run(cls, config_file_path):
-    self._check_dependencies()
+    cls._check_dependencies()
     # TODO(alessio): call BIN_WRAPREC
 
   @classmethod
