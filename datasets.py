@@ -80,7 +80,7 @@ class CS4065_Dataset(object):
 
   @classmethod
   def _fetch_dataset(cls, url, dataset_path):
-    os.mkdir(dataset_path)
+    os.makedirs(dataset_path)
     (temp_file_path, headers) = urllib.urlretrieve(url)
     tar_file = tarfile.open(temp_file_path, 'r:gz')
     tar_file.extractall(dataset_path)
