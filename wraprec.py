@@ -30,8 +30,8 @@ class PyWrapRec(object):
     cls.check_dependencies()
 
     commands = cls._get_command() + ['', config_file_path]
-    # TODO(alessio): call external process
-    # TODO(alessio): parse output file with libpanda
+    # TODO(alessio): call external process.
+    # TODO(alessio): parse output file with libpandas.
 
   @classmethod
   def check_dependencies(cls):
