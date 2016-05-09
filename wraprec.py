@@ -29,16 +29,35 @@ class PyWrapRec(object):
   @classmethod
   def run(cls, config_file_path):
     cls.check_dependencies()
+    try:
+      # WrapRec needs to run from the data directory.
+      working_directory = os.path.dirname(config_file_path)
+      assert os.path.isdir(working_directory)
 
-    commands = cls._get_command() + ['', config_file_path]
-    # TODO(alessio): call external process.
-    # TODO(alessio): parse output file with libpandas.
+      # Build arguments list.
+      args = cls._get_command() + [config_file_path]
+
+      # Create a new process.
+      process = subprocess.Popen(args, cwd=working_directory, bufsize=4096)
+      exit_code = process.wait()
+
+      if exit_code != 0:
+        raise Exception('WrapRec error (exit code: %d)' % exit_code)
+
+      return cls._parse_wraprec_reults(config_file_path)
+    except subprocess.CalledProcessError as e:
+      raise e
 
   @classmethod
   def check_dependencies(cls):
     if not cls._is_wraprec_deployed():
       cls._deploy_wraprec()
     cls._test_wraprec()
+
+  @classmethod
+  def _parse_wraprec_reults(cls, config_file_path):
+    # TODO(alessio): parse output file with libpandas.
+    pass
 
   @classmethod
   def _test_wraprec(cls):
