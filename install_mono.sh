@@ -40,7 +40,10 @@ elif [ $HAS_BREW -eq 1 ]; then
 else
   # Cannot automatically install mono.
   echo Cannot automatically install mono on this system.
-  echo 'If you use OS X, add homebrew (http://brew.sh/); otherwise manually install mono.'
+  if [ $OSTYPE == "darwin"* ]; then
+    echo '  You can first manually install homebrew for OS X (http://brew.sh/).'
+    echo '  Then re-run this script, and mono will automatically be installed.'
+  fi
   exit 1
 fi
 
