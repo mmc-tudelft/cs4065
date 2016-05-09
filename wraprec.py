@@ -2,6 +2,7 @@ import os
 import platform
 import shutil
 import subprocess
+import sys
 import tarfile
 import urllib
 
@@ -88,6 +89,8 @@ class PyWrapRec(object):
 
   @classmethod
   def _install_mono_unix(cls):
-    exit_code = subprocess.call([UNIX_INSTALL_MONO])
-    if exit_code != 0:
-      raise IOError('cannot install mono (exit code %d)' % exit_code)
+    try:
+      output = subprocess.check_output([UNIX_INSTALL_MONO])
+      print '[debug]', output
+    except subprocess.CalledProcessError as e:
+      raise IOError('cannot install mono (exit code %d)' % e.returncode)
