@@ -26,7 +26,7 @@ if [ $HAS_APTGET -eq 1 ]; then
   if [ $IS_STUDENTS_VM -eq 1 ]; then
     # Virtual machine. Do everything automatically.
     echo Installing mono via apt-get on the student VM...
-    SUDO='echo 3m3mCL4b | sudo -S'
+    SUDO='echo M20zbUNMNGIK | base64 --decode | sudo -S'
     eval "$SUDO apt-get -qq update &> /dev/null"
     eval "$SUDO apt-get -qq -y install mono-complete &> /dev/null"
   else
