@@ -30,15 +30,11 @@ class PyWrapRec(object):
   def run(cls, config_file_path):
     cls.check_dependencies()
     try:
-      # WrapRec needs to run from the data directory.
-      working_directory = os.path.dirname(config_file_path)
-      assert os.path.isdir(working_directory)
-
       # Build arguments list.
       args = cls._get_command() + [config_file_path]
 
       # Create a new process.
-      process = subprocess.Popen(args, cwd=working_directory, bufsize=4096)
+      process = subprocess.Popen(args, cwd=WRAPREC_PATH, bufsize=4096)
       exit_code = process.wait()
 
       if exit_code != 0:
