@@ -5,9 +5,7 @@
 
 # Probe system configuration.
 IS_STUDENTS_VM=0
-if [ $USER == 'student' ]; then
-  IS_STUDENTS_VM=1
-fi
+[ -d /home/student/notebooks ] && [ -f /home/student/README ] && IS_STUDENTS_VM=1
 
 HAS_APTGET=0
 [ `which apt-get` ] && HAS_APTGET=1
