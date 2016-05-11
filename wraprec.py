@@ -5,6 +5,9 @@ import subprocess
 import sys
 import tarfile
 import urllib
+from xml.etree import ElementTree
+
+import pandas
 
 from config import BASE_PATH
 
@@ -15,8 +18,12 @@ WRAPREC_PATH = os.path.join(BASE_PATH, 'wraprec')
 
 WRAPREC_BIN = os.path.join(WRAPREC_PATH, 'WrapRec.exe')
 
+WRAPREC_VERSION_TAG_PATH = os.path.join(WRAPREC_PATH, 'VERSION.txt')
+
+WRAPREC_VERSION = '2.0.4'
+
 WRAPREC_URL = ('https://github.com/babakx/WrapRec/releases/download/{0}/'
-               'wraprec.{0}.tar.gz'.format('2.0.3'))
+               'wraprec.{0}.tar.gz'.format(WRAPREC_VERSION))
 
 PLATFORM = platform.system()
 
@@ -28,8 +35,14 @@ class PyWrapRec(object):
 
   @classmethod
   def run(cls, config_file_path):
+    """
+    TODO(alessio): write inline doc
+    """
     cls.check_dependencies()
     try:
+      # WrapRec working directory (the same as the configuration file).
+      wraprec_working_dir = os.path.dirname(config_file_path)
+
       # Build arguments list.
       args = cls._get_command() + [config_file_path]
 
@@ -52,8 +65,42 @@ class PyWrapRec(object):
 
   @classmethod
   def _parse_wraprec_reults(cls, config_file_path):
-    # TODO(alessio): parse output file with libpandas.
-    pass
+    """
+    Parse the WrapRec results.
+
+    Args:
+      config_file_path
+
+    Returns:
+      pandas.core.frame.DataFrame, pandas.core.frame.DataFrame
+    """
+    # Read experiment id and path to results from the configuration file.
+    xml_config_file_root = cls._parse_wraprec_config_file(config_file_path)
+    xml_experiments_node = xml_config_file_root.find('experiments')
+    experiment_id = xml_experiments_node.get('run')
+    results_path = xml_experiments_node.get('resultsFolder')
+    csv_sep_char = xml_experiments_node.get('separator')
+    if experiment_id is None or results_path is None:
+      raise Exception('cannot parse WrapRec configuration file')
+
+    # Find the output files to be parsed.
+    results_file_path = os.path.join(results_path, '%s.csv' % experiment_id)
+    splits_file_path = os.path.join(results_path, '%s.splits.csv' % (
+        experiment_id))
+    if not all([os.path.isfile(path) for path in [
+        results_file_path, splits_file_path]]):
+      raise Exception('cannot find WrapRec output files')
+
+    # Parse output files with libpandas.
+    results = pandas.read_csv(results_file_path, sep=csv_sep_char)
+    split_info = pandas.read_csv(splits_file_path, sep=csv_sep_char)
+
+    return results, split_info
+
+  @classmethod
+  def _parse_wraprec_config_file(cls, config_file_path):
+    xml_tree = ElementTree.parse(config_file_path)
+    return xml_tree.getroot()
 
   @classmethod
   def _test_wraprec(cls):
@@ -72,7 +119,14 @@ class PyWrapRec(object):
 
   @classmethod
   def _is_wraprec_deployed(cls):
-    return os.path.exists(WRAPREC_BIN)
+    if not os.path.exists(WRAPREC_BIN):
+      return False
+
+    # Check version.
+    if not os.path.exists(WRAPREC_VERSION_TAG_PATH):
+      return False
+    with open(WRAPREC_VERSION_TAG_PATH) as f:
+      return f.readline().strip() == WRAPREC_VERSION
 
   @classmethod
   def _deploy_wraprec(cls):
@@ -94,6 +148,10 @@ class PyWrapRec(object):
       (temp_file_path, headers) = urllib.urlretrieve(WRAPREC_URL)
       tar_file = tarfile.open(temp_file_path, 'r:gz')
       tar_file.extractall(WRAPREC_PATH)
+
+      # Save depoyed version tag.
+      with open(WRAPREC_VERSION_TAG_PATH, 'w') as f:
+        f.write('%s\n' % WRAPREC_VERSION)
     except Exception as e:
       # Remove.
       if os.path.exists(WRAPREC_PATH):
