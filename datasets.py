@@ -11,7 +11,7 @@ class CS4065_Dataset(object):
       'poster_images': None,
       'testcases': 'https://www.dropbox.com/s/z7nenlpkrcsodrt/testcases.tar.gz?dl=1',
       'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
-      'wraprec_sample_data': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
+      'wraprec_sample_data2': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
   }
 
   def __init__(self):
@@ -22,7 +22,7 @@ class CS4065_Dataset(object):
     """
     It returns the path to the configuration file for the WrapRec toolbox.
     """
-    path_to_files = cls._get_dataset_path('wraprec_sample_data')
+    path_to_files = cls._get_dataset_path('wraprec_sample_data2')
     config_file_path = os.path.join(path_to_files, 'sample.xml')
     assert os.path.exists(config_file_path)
     return config_file_path
