@@ -12,7 +12,7 @@ class CS4065_Dataset(object):
       'testcases': 'https://www.dropbox.com/s/z7nenlpkrcsodrt/testcases.tar.gz?dl=1',
       'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
       'wraprec_sample_data3': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
-      'songretrieval_subset': 'https://www.dropbox.com/s/h183osm17r6o483/songretrieval-small.tar?dl=1',
+      'songretrieval_subset': 'https://www.dropbox.com/s/wubrlxput9cstn1/songretrieval-small.tar.gz?dl=1',
   }
 
   def __init__(self):
