@@ -12,6 +12,7 @@ class CS4065_Dataset(object):
       'testcases': 'https://www.dropbox.com/s/z7nenlpkrcsodrt/testcases.tar.gz?dl=1',
       'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
       'wraprec_sample_data3': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
+      'songretrieval_subset': 'https://www.dropbox.com/s/h183osm17r6o483/songretrieval-small.tar?dl=1',
   }
 
   def __init__(self):
@@ -37,6 +38,19 @@ class CS4065_Dataset(object):
       full_filepath = os.path.join(path_to_files, rating_data_path)
       if os.path.isfile(full_filepath):
         path_to_file_dict[rating_data_path] = full_filepath
+
+    return path_to_file_dict
+
+  @classmethod
+  def get_songretrieval_subset(cls):
+    path_to_files = cls._get_dataset_path('songretrieval_subset')
+
+    path_to_file_dict = {}
+
+    for mp3_file_path in os.listdir(path_to_files):
+      full_filepath = os.path.join(path_to_files, mp3_file_path)
+      if os.path.isfile(full_filepath):
+        path_to_file_dict[mp3_file_path] = full_filepath
 
     return path_to_file_dict
 
