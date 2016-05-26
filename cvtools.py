@@ -25,6 +25,7 @@ def ipynb_show_image(image, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   ax.set_title(title)
   plt.imshow(image)
   plt.axis('off')
+  return ax
 
 
 def ipynb_show_matrix(matrix, title='', figsize=None):
@@ -33,7 +34,7 @@ def ipynb_show_matrix(matrix, title='', figsize=None):
   if figsize is None:
     ipynb_show_image(matrix_image, title)
   else:
-    ipynb_show_image(matrix_image, title, figsize)
+    ax = ipynb_show_image(matrix_image, title, figsize)
     force_aspectratio(ax, float(figsize[0]) / float(figsize[1]))
 
 
