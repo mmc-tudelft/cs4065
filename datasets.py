@@ -48,6 +48,8 @@ class CS4065_Dataset(object):
     path_to_file_dict = {}
 
     for mp3_file_path in os.listdir(path_to_files):
+      if not mp3_file_path.endswith('.mp3'):
+        continue
       full_filepath = os.path.join(path_to_files, mp3_file_path)
       if os.path.isfile(full_filepath):
         path_to_file_dict[mp3_file_path] = full_filepath
