@@ -2,6 +2,7 @@ import os
 import shutil
 import tarfile
 import urllib
+import pickle
 
 from config import PATH_DATA
 
@@ -13,6 +14,7 @@ class CS4065_Dataset(object):
       'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
       'wraprec_sample_data3': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
       'songretrieval_subset': 'https://www.dropbox.com/s/wubrlxput9cstn1/songretrieval-small.tar.gz?dl=1',
+      'msra_mm1_subset': 'https://www.dropbox.com/s/bfj2wx50rapxnlz/msra-mm1_subset.tar.gz?dl=1',
   }
 
   def __init__(self):
@@ -42,6 +44,31 @@ class CS4065_Dataset(object):
     return path_to_file_dict
 
   @classmethod
+  def get_msra_mm1_subset(cls):
+    path_to_root = cls._get_dataset_path('msra_mm1_subset')
+    image_prefix = os.path.join(path_to_root, 'msra-mm1_subset/Images')
+    features_prefix = os.path.join(path_to_root, 'msra-mm1_subset/Features')
+
+    msra_mm1_data = {}
+
+    for category_data_path in os.listdir(features_prefix):
+      if not category_data_path.startswith('.'):
+        category = category_data_path[:-4]
+        full_category_data_path = os.path.join(features_prefix, category_data_path)
+        category_data = pickle.load(open(full_category_data_path, 'rb'))
+
+        full_image_paths = []
+
+        for original_rank in category_data['original_ranks']:
+          full_image_paths.append(os.path.join(image_prefix, '%s/%s.jpg' % (category, original_rank)))
+
+        category_data['image_paths'] = full_image_paths
+
+        msra_mm1_data[category] = category_data
+
+    return msra_mm1_data
+
+  @classmethod
   def get_songretrieval_subset(cls):
     path_to_files = cls._get_dataset_path('songretrieval_subset')
 
@@ -53,7 +80,6 @@ class CS4065_Dataset(object):
         path_to_file_dict[mp3_file_path] = full_filepath
 
     return path_to_file_dict
-
   @classmethod
   def get_poster_images(cls):
     path_to_images = cls._get_dataset_path('poster_images')
