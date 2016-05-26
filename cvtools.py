@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 
 _DEFAULT_IMAGE_FIGSIZE = (7, 7)
 
+def force_aspectratio(ax, aspect=1):
+  image = ax.get_images()
+  extent =  image[0].get_extent()
+  ax.set_aspect(abs((extent[1] - extent[0]) / (
+      extent[3] - extent[2])) / aspect)
+
+
 def ipynb_show_cv2_image(image_bgr, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   image_rgb = image_bgr.copy()
   image_rgb[:, :, 0] = image_bgr[:, :, 2]
@@ -18,12 +25,17 @@ def ipynb_show_image(image, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   ax.set_title(title)
   plt.imshow(image)
   plt.axis('off')
+  return ax
 
 
-def ipynb_show_matrix(matrix, title=''):
+def ipynb_show_matrix(matrix, title='', figsize=None):
   matrix_image = 255.0 * (matrix - np.min(matrix)) / (
       np.max(matrix) - np.min(matrix))
-  ipynb_show_image(matrix_image, title)
+  if figsize is None:
+    ipynb_show_image(matrix_image, title)
+  else:
+    ax = ipynb_show_image(matrix_image, title, figsize)
+    force_aspectratio(ax, float(figsize[0]) / float(figsize[1]))
 
 
 def ipynb_show_color_histogram(histogram, plot_title=''):
