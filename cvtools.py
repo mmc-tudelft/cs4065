@@ -20,10 +20,10 @@ def ipynb_show_image(image, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   plt.axis('off')
 
 
-def ipynb_show_matrix(matrix, title=''):
+def ipynb_show_matrix(matrix, title='', figsize=_DEFAULT_IMAGE_FIGSIZE):
   matrix_image = 255.0 * (matrix - np.min(matrix)) / (
       np.max(matrix) - np.min(matrix))
-  ipynb_show_image(matrix_image, title)
+  ipynb_show_image(matrix_image, title, figsize)
 
 
 def ipynb_show_color_histogram(histogram, plot_title=''):
