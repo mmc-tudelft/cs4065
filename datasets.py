@@ -14,7 +14,7 @@ class CS4065_Dataset(object):
       'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
       'wraprec_sample_data3': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
       'songretrieval_subset': 'https://www.dropbox.com/s/wubrlxput9cstn1/songretrieval-small.tar.gz?dl=1',
-      'songretrieval_queries': 'https://www.dropbox.com/s/2oexk6iktc2d3oj/songretrieval-queries.tar.gz?dl=1',
+      'songretrieval_queries': 'https://www.dropbox.com/s/km4zcqagvi7i5rk/songretrieval-queries.tar.gz?dl=1',
       'msra_mm1_subset': 'https://www.dropbox.com/s/bfj2wx50rapxnlz/msra-mm1_subset.tar.gz?dl=1',
   }
 
