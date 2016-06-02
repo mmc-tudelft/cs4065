@@ -94,5 +94,14 @@ class TestLibrary(unittest.TestCase):
     except ImportError as e:
       self.fail(e)
 
+  def test_wraprec(self):
+    try:
+      from wraprec import PyWrapRec
+      PyWrapRec.check_dependencies()
+    except ImportError as e:
+      self.fail(e)
+    except IOError as e:
+      self.fail(e)
+
 if __name__ == "__main__":
   unittest.main()
