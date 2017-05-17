@@ -9,13 +9,13 @@ from config import PATH_DATA
 class CS4065_Dataset(object):
 
   DATASET_ARCHIVE_URLS = {
-      'poster_images': None,
-      'testcases': 'https://www.dropbox.com/s/z7nenlpkrcsodrt/testcases.tar.gz?dl=1',
-      'movielens_subset': 'https://www.dropbox.com/s/mbzgntv787x75ld/movielens_subset.tar.gz?dl=1',
+      'poster_images': 'https://www.dropbox.com/s/r4x07cg1xu2rgp5/poster_images.tar.gz?dl=1',
+      'testcases': 'https://www.dropbox.com/s/r65xjhgc95zw2o5/testcases.tar.gz?dl=1',
+      'movielens_subset': 'https://www.dropbox.com/s/yi20avzzrlyk5qo/movielens_subset.tar.gz?dl=1',
       'wraprec_sample_data3': 'https://www.dropbox.com/s/j46m8qdbkh3vtb3/wraprec_sample_data.tar.gz?dl=1',
-      'songretrieval_subset': 'https://www.dropbox.com/s/wubrlxput9cstn1/songretrieval-small.tar.gz?dl=1',
-      'songretrieval_queries': 'https://www.dropbox.com/s/km4zcqagvi7i5rk/songretrieval-queries.tar.gz?dl=1',
-      'msra_mm1_subset': 'https://www.dropbox.com/s/bfj2wx50rapxnlz/msra-mm1_subset.tar.gz?dl=1',
+      'songretrieval_subset': 'https://www.dropbox.com/s/8p86yyf2hwidlmr/songretrieval-small.tar.gz?dl=1',
+      'songretrieval_queries': 'https://www.dropbox.com/s/mpj2tny8bnulhqr/songretrieval-queries.tar.gz?dl=1',
+      'msra_mm1_subset': 'https://www.dropbox.com/s/ynf72jzwnys6vfn/msra-mm1_subset.tar.gz?dl=1',
   }
 
   def __init__(self):
@@ -47,8 +47,8 @@ class CS4065_Dataset(object):
   @classmethod
   def get_msra_mm1_subset(cls):
     path_to_root = cls._get_dataset_path('msra_mm1_subset')
-    image_prefix = os.path.join(path_to_root, 'msra-mm1_subset/Images')
-    features_prefix = os.path.join(path_to_root, 'msra-mm1_subset/Features')
+    image_prefix = os.path.join(path_to_root, 'Images')
+    features_prefix = os.path.join(path_to_root, 'Features')
 
     msra_mm1_data = {}
 
