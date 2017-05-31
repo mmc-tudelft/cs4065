@@ -3,6 +3,9 @@ import shutil
 import tarfile
 import urllib
 import pickle
+import subprocess
+import tempfile
+import zipfile
 
 from config import PATH_DATA
 
@@ -16,6 +19,8 @@ class CS4065_Dataset(object):
       'songretrieval_subset': 'https://www.dropbox.com/s/wubrlxput9cstn1/songretrieval-small.tar.gz?dl=1',
       'songretrieval_queries': 'https://www.dropbox.com/s/km4zcqagvi7i5rk/songretrieval-queries.tar.gz?dl=1',
       'msra_mm1_subset': 'https://www.dropbox.com/s/bfj2wx50rapxnlz/msra-mm1_subset.tar.gz?dl=1',
+      'vgg19_model': 'https://s3.amazonaws.com/lasagne/recipes/pretrained/imagenet/vgg19.pkl',
+      'vse_model': 'http://www.cs.toronto.edu/~rkiros/models/vse.zip',
   }
 
   def __init__(self):
@@ -120,6 +125,74 @@ class CS4065_Dataset(object):
         'image': os.path.join(path, 'lena.jpg'),
         'video': os.path.join(path, 'big_buck_bunny.mp4'),
     }
+
+  @classmethod
+  def get_vse_models(cls):
+    """
+    Since their model has different file configuration,
+    this method is implemented as in adhoc manner
+    """
+    url_to_vgg = cls.DATASET_ARCHIVE_URLS['vgg19_model']
+    url_to_vse = cls.DATASET_ARCHIVE_URLS['vse_model']
+
+    path_to_vgg = os.path.join(PATH_DATA,'vgg19_model')
+    path_to_vse = os.path.join(PATH_DATA,'vse_model')
+
+    vgg_fn = os.path.join(path_to_vgg,'vgg19.pkl')
+    if not os.path.exists(vgg_fn):
+        if not os.path.exists(path_to_vgg):
+            os.makedirs(path_to_vgg)
+
+        # download each model with wget
+        subprocess.call(['wget',url_to_vgg])
+        os.rename(
+            os.path.join(os.getcwd(),'vgg19.pkl'),
+            os.path.join(path_to_vgg,'vgg19.pkl')
+        )
+
+    vse_fn = os.path.join(path_to_vse,'coco.npz')
+    if not os.path.exists(vse_fn):
+
+        if not os.path.exists(path_to_vse):
+            os.makedirs(path_to_vse)
+
+        # unzip vse model (.zip file)
+        subprocess.call(['wget',url_to_vse])
+        zip_path = os.path.join(os.getcwd(),'vse.zip')
+        with zipfile.ZipFile(zip_path, 'r') as zipf:
+            zipf.extractall(path_to_vse)
+
+        # delete zip file
+        os.remove(zip_path)
+
+    return {
+        'vgg19_model':vgg_fn,
+        'vse_model':vse_fn
+    }
+
+  @classmethod
+  def get_coco_testset(cls):
+    import urllib2
+
+    src = "http://www.cs.toronto.edu/~rkiros/vse_coco_dev.html"
+    response = urllib2.urlopen(src)
+    x = response.readlines()
+
+    # get important lines
+    Y = [(x[j+1],x[j+4]) for j in xrange(39,len(x)-9,9)]
+
+    # parse strings
+    im_root = 'http://www.cs.toronto.edu/~rkiros/'
+    Z = map(
+        lambda y:
+        (
+            im_root + y[0].split('src="')[-1].split('"><')[0][2:],
+            y[1].split('<br>')[-1].replace('\n','')
+        ),
+        Y
+    )
+
+    return Z
 
   @classmethod
   def _get_dataset_path(cls, dataset_name):
