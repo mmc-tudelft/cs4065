@@ -19,7 +19,6 @@ jupyter==1.0.0
 jupyter-client==4.2.2
 jupyter-console==4.1.1
 jupyter-core==4.1.0
-Lasagne==0.2.dev1
 librosa==0.4.2
 MarkupSafe==0.23
 matplotlib==1.5.1
