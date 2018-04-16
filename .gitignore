@@ -1,2 +1,4 @@
-config.py
+# config.py
 *.pyc
+*.ipynb
+labs/
